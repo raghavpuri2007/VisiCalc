@@ -1,8 +1,10 @@
-package spreadsheet;
+//VisiCalc
+//Raghav Puri
+//AP Computer Science
 
 public class Cell {
 	//value in cell
-	Object value;
+	String value;
 	//row number of cell
 	int rowIndex;
 	//column number of cell
@@ -11,21 +13,24 @@ public class Cell {
 		this.value = arr[2];
 		this.rowIndex = getRowIndex(arr[0]);
 		this.colIndex = getColIndex(arr[0]);
-		System.out.println(arr[0] + " maps to [" + this.rowIndex + ", " + this.colIndex + "]");
+		// System.out.println(arr[0] + " maps to [" + this.rowIndex + ", " + this.colIndex + "]");
+		//^ This is for earlier checkpoint, not used anymore
 	}
 	
-	public int getColIndex(String cellAddress) {
+	public static int getColIndex(String cellAddress) {
 		char location = cellAddress.charAt(0);
+		location = Character.toUpperCase(location);
 		//converts letter to number using unicode table
+		
 		return (int)(location) - 65;
 	}
 	
-	public int getRowIndex(String cellAddress) {
+	public static int getRowIndex(String cellAddress) {
 		String location = cellAddress.substring(1);
 		return Integer.parseInt(location) -1;
 	}
 	
 	public String toString() {
-		return value.toString();
+		return value;
 	}
 }
