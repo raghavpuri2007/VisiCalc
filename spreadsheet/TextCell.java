@@ -1,10 +1,13 @@
-package spreadsheet;
-
+/*
+ * Make header
+ * 
+ */
 public class TextCell extends Cell{
 
 	public TextCell(String[] arr) {
 		super(arr);
-		// TODO Auto-generated constructor stub
+		this.value = arr[3];
 	}
-	//stores text
+	
+	//uses toString() method from Cell class
 }
