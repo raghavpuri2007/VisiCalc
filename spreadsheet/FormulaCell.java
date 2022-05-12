@@ -3,20 +3,26 @@
 //AP Computer Science
 
 public class FormulaCell extends Cell {
-	String message;
+	String returnValue;
+	double formulaValue;
 	public FormulaCell(String[] arr, String message) {
 		super(arr);
-		this.value = calculateCell(arr);
-		this.message = message;
 	}
 	//stores a formula
+	
+	public void setValues(String[] arr) {
+		this.formulaValue = Double.parseDouble(calculateCell(arr));
+		this.returnValue = formulaValue + "";
+		if(Math.round(formulaValue) == formulaValue) {
+			returnValue = returnValue.substring(0, returnValue.indexOf('.'));
+		}
+	}
 	
 	public String calculateCell(String[] arr) {
 		double total = 0;
 		String finalTotal = "";
 		if(arr[3].equalsIgnoreCase("sum")) {
 			total = sumCell(arr);
-			System.out.println(total);
 		} else if(arr[3].equalsIgnoreCase("avg")) {
 			total = avgCell(arr); 
 		} else {
@@ -79,5 +85,7 @@ public class FormulaCell extends Cell {
 		return sum / iteration;
 	}
 	
-	//uses Parents toString() method
+	public String toString() {
+		return returnValue;
+	}
 }
