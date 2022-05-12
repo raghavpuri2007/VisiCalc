@@ -55,7 +55,10 @@ class VisiCalc {
 			  } else {
 				  grid.clearCell(split);
 			  }
-		  }else {
+		  }else if(split.length == 4){
+			  //sort cells
+			  grid.sortCells(split);
+		  } else {
 			  //pass tokenized message and the actual message
 			  grid.addCell(split, message);
 			  commands.add(message);
