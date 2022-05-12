@@ -2,6 +2,7 @@
 //Raghav Puri
 //AP Computer Science
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 
 public class Grid {
 	static Cell[][] spreadsheet = new Cell[10][7];
@@ -13,7 +14,7 @@ public class Grid {
 		  String nineDashes = "--------";
 		  //default blank spaces
 		  String sevenBlanks = "       ";
-		  //nested loops to iterate through spreadhseet array
+		  //nested loops to iterate through spreadsheet array
 		  for(int r = 0; r < spreadsheet.length; r++) {
 			  for(int c = 0; c < spreadsheet[r].length; c++) {
 				  if(!addedTop && r == 0) {
@@ -33,6 +34,7 @@ public class Grid {
 						if(element == null) {
 							System.out.print(sevenBlanks + "|");
 						} else {
+							element.setValues(element.command);
 							if(element.toString().length() >= 7) {
 								System.out.printf(element.toString().substring(0, 7) + "|");
 							} else {
@@ -55,7 +57,7 @@ public class Grid {
 		  }
 	  }
 	//adds specific type of cell to the spreadsheet list
-	public void addCell(String[] arr, String message) throws FileNotFoundException {
+	public void addCell(String[] arr, String message) {
 		Cell cell;
 		//checks if added Cell was a DateCell
 		if(arr[2].contains("/")) {
@@ -71,7 +73,6 @@ public class Grid {
 			cell = new Cell(arr);
 		}
 		spreadsheet[cell.rowIndex][cell.colIndex] = cell;
-		//updateFormulaCell(arr[0]);
 	}
 	//returns the value at the cell location
 	public Cell getCell(String[] arr) {
@@ -92,17 +93,28 @@ public class Grid {
 		System.out.println("Cell successfully cleared");
 	}
 	
-	/*public void updateFormulaCell(String location) throws FileNotFoundException {
-		for(int r = 0; r < spreadsheet.length; r++) {
-			for(int c = 0; c < spreadsheet[r].length; c++) {
-				if(spreadsheet[r][c] instanceof FormulaCell) {
-					FormulaCell fc = (FormulaCell) spreadsheet[r][c];
-					if(fc.message.contains(location)) {
-						VisiCalc.processCommand(fc.message);
-					}
-				}
+	public void sortCells(String[] arr) {
+		int iteration = 0;
+		boolean ascending = false;
+		if(Character.toUpperCase(arr[0].charAt(arr[0].length() - 1)) == 'A')
+			ascending = true;
+		Cell[] values = new Cell[(Cell.getColIndex(arr[3]) - Cell.getColIndex(arr[1]) + 1) * (Cell.getRowIndex(arr[3]) - Cell.getRowIndex(arr[1]) + 1)];
+		for(int i = Cell.getRowIndex(arr[1]); i < Cell.getRowIndex(arr[3])+1; i++) {
+			for(int j = Cell.getColIndex(arr[1]); j < Cell.getColIndex(arr[3])+1; j++) {
+				values[iteration] = spreadsheet[i][j];
+				iteration++;
+			}
+		}
+		iteration = 0;
+		Arrays.sort(values);
+		for(int i = Cell.getColIndex(arr[1]); i < Cell.getColIndex(arr[3])+1; i++) {
+			for(int j = Cell.getRowIndex(arr[1]); j < Cell.getRowIndex(arr[3])+1; j++) {
+				if(ascending)
+					spreadsheet[j][i] = values[iteration];
+				else
+					spreadsheet[Cell.getRowIndex(arr[3])- j][Cell.getColIndex(arr[3])- i] = values[iteration];
+				iteration++;
 			}
 		}
 	}
-	*/
 }
