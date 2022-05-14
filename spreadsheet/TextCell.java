@@ -3,11 +3,16 @@
  * 
  */
 public class TextCell extends Cell{
-
+	String textValue;
 	public TextCell(String[] arr) {
 		super(arr);
-		this.value = arr[3];
 	}
 	
-	//uses toString() method from Cell class
+	public void setValues(String[] arr) {
+		this.textValue = arr[3];
+	}
+
+	public String toString() {
+		return this.textValue;
+	}
 }
