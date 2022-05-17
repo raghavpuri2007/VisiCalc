@@ -38,9 +38,11 @@ public class Cell implements Comparable<Cell>{
 	}
 	
 	@Override
+	//overriden compareTo method that is used to compare Cells
 	public int compareTo(Cell other) {
 		//Compare DateCell
 		if(this instanceof FormulaCell) {
+			//if both are FormulaCell's
 			if(other instanceof FormulaCell) {
 				return Integer.parseInt(this.toString()) - Integer.parseInt(other.toString());
 			}
@@ -48,8 +50,11 @@ public class Cell implements Comparable<Cell>{
 			return -1;
 		} else if(this instanceof DateCell) {
 			if(other instanceof DateCell) {
+				//if both are DateCell
 				if(DateCell.getYear((DateCell) this) - DateCell.getYear((DateCell) other) == 0) {
+					//checks the months
 					if(DateCell.getMonth((DateCell) this) - DateCell.getMonth((DateCell)other) == 0) {
+						//returns the difference in the days
 						return DateCell.getDay((DateCell) this) - DateCell.getDay((DateCell) other);
 					} else {
 						return DateCell.getMonth((DateCell) this) - DateCell.getMonth((DateCell) other);
@@ -64,26 +69,26 @@ public class Cell implements Comparable<Cell>{
 				return -1;
 			}
 		} else if(this instanceof TextCell) {
-				if(other instanceof TextCell) {
-					for(int i = 0; i < Math.min(this.toString().length(), other.toString().length()); i++) {
-						if(this.toString().charAt(i) - other.toString().charAt(i) != 0) {
-							return this.toString().charAt(i) - other.toString().charAt(i);
-						}
-				}
+			if(other instanceof TextCell) {
+				for(int i = 0; i < Math.min(this.toString().length(), other.toString().length()); i++) {
+					if(this.toString().charAt(i) - other.toString().charAt(i) != 0) {
+						return this.toString().charAt(i) - other.toString().charAt(i);
+					}
 				return 0;
-				} else if(other instanceof FormulaCell || other instanceof DateCell) {
-					return -1;
-				} else {
-					//If Cell
-					return 1;
 				}
+			} else if(other instanceof FormulaCell || other instanceof DateCell) {
+				return -1;
+			} else {
+				//If Cell
+				return 1;
+			}
 		} else {
 			//Normal Cell
 			if(other instanceof Cell) {
 				return Integer.parseInt(this.toString()) - Integer.parseInt(other.toString());
 			}
-			return 1;
 		}
+		return 1;
 	}
 
 	public String toString() {
@@ -91,5 +96,4 @@ public class Cell implements Comparable<Cell>{
 		return cellNumber+"";
 	}
 
-}
 }
