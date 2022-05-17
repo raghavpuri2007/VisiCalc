@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+
 //VisiCalc
 //Raghav Puri
 //AP Computer Science
@@ -19,6 +22,8 @@ public class FormulaCell extends Cell {
 	}
 	
 	public String calculateCell(String[] arr) {
+		
+		arr = ModExpoConverter(arr);
 		double total = 0;
 		String finalTotal = "";
 		if(arr[3].equalsIgnoreCase("sum")) {
@@ -83,6 +88,37 @@ public class FormulaCell extends Cell {
 		}
 		//formula to return average
 		return sum / iteration;
+	}
+	public static String[] ModExpoConverter(String[] arr) {
+		ArrayList<String> oper = ArraytoArrayList(arr);
+		double sum = 0;
+		String op = "^";
+		if(oper.indexOf("^") != -1) {
+			int firstIndex = oper.indexOf("^") - 1;
+			int secondIndex = oper.indexOf("^") + 1;
+			sum = Math.pow(Integer.parseInt(oper.get(firstIndex)), Integer.parseInt(oper.get(secondIndex)));
+		} else if(oper.indexOf("%") != -1) {
+			op = "%";
+			int firstIndex = oper.indexOf("%") - 1;
+			int secondIndex = oper.indexOf("%") + 1;
+			sum = Integer.parseInt(oper.get(firstIndex)) % Integer.parseInt(oper.get(secondIndex));
+		} else {
+			return arr;
+		}
+		int index = oper.indexOf(op);
+		for(int i = index + 1; i >= index - 1; i--) {
+			oper.remove(i);
+			if(i == index-1) {
+				oper.add(index-1, ((int) sum) + "");
+			}
+		}
+		
+		return ModExpoConverter(oper.toArray(new String[oper.size()]));
+	}
+	
+	public static ArrayList<String> ArraytoArrayList(String[] arr) {
+		ArrayList<String> oper = new ArrayList<String>(Arrays.asList(arr));
+		return oper;
 	}
 	
 	public String toString() {
