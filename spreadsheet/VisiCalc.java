@@ -59,9 +59,19 @@ class VisiCalc {
 			  //sort cells
 			  grid.sortCells(split);
 		  } else {
-			  //pass tokenized message and the actual message
-			  grid.addCell(split, message);
-			  commands.add(message);
+			  if(split[1].equalsIgnoreCase("Size")) {
+				 grid.CELL_SIZE = Integer.parseInt(split[2]);
+			  } else if(split[0].equalsIgnoreCase("Number")){
+				  if(split[1].equalsIgnoreCase("Rows")) {
+					  grid.setRows(Integer.parseInt(split[2]));
+				  } else {
+					  grid.setCols(Integer.parseInt(split[2]));
+				  }
+			  }else {
+				//pass tokenized message and the actual message
+				 grid.addCell(split, message);
+				 commands.add(message); 
+			  }
 		  }
 	  }
   }
