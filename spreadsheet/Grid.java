@@ -5,38 +5,47 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 
 public class Grid {
-	static Cell[][] spreadsheet = new Cell[10][7];
+	public int CELL_SIZE = 7;
+	public static int CELL_ROWS = 10;
+	public static int CELL_COLUMNS = 7;
+	static Cell[][] spreadsheet = new Cell[CELL_ROWS][CELL_COLUMNS];
 	//method to print out the grid
 	public void printGrid() {
 
 		  boolean addedTop = false;
 		  //default dashed lines
-		  String nineDashes = "--------";
+		  String dashes = "";
 		  //default blank spaces
-		  String sevenBlanks = "       ";
+		  String blanks = "";
+		  for(int i = 0; i < CELL_SIZE; i++) {
+			  blanks += " ";
+		  }
+		  for(int i = 0; i < CELL_SIZE + 1; i++) {
+			  dashes += "-";
+		  }
 		  //nested loops to iterate through spreadsheet array
 		  for(int r = 0; r < spreadsheet.length; r++) {
 			  for(int c = 0; c < spreadsheet[r].length; c++) {
 				  if(!addedTop && r == 0) {
 					  //print the top left blank box
 					  if(c == 0) {
-						  System.out.print(sevenBlanks.substring(1) + " |");
+						  System.out.print(blanks.substring(1) + " |");
 					  }
 					  //prints column headers using unicode values
-					  System.out.print(sevenBlanks.substring(0, 3) + (char)(c + 65) + sevenBlanks.substring(4) + "|");
+					  System.out.print(blanks.substring(0, blanks.length()/2) + (char)(c + 65) + blanks.substring(blanks.length()/2+1) + "|");
 				  } else {
 					  //prints rows headers
 					  	if(c == 0) {
-					  		System.out.printf(sevenBlanks.substring(0, 2) + "%2d" + sevenBlanks.substring(4) + "|", (r+1));
+					  		System.out.printf(blanks.substring(0, blanks.length()/2-1) + "%2d" + blanks.substring(blanks.length()/2+1) + "|", (r+1));
 					  	} 
 					  	//gets element at the index in the spreadsheet
 					  	Cell element = spreadsheet[r][c];
 						if(element == null) {
-							System.out.print(sevenBlanks + "|");
+							System.out.print(blanks + "|");
 						} else {
 							element.setValues(element.command);
-							if(element.toString().length() >= 7) {
-								System.out.printf(element.toString().substring(0, 7) + "|");
+							if(element.toString().length() >= CELL_SIZE) {
+								System.out.printf(element.toString().substring(0, CELL_SIZE) + "|");
 							} else {
 								System.out.printf("%6s |", element);
 							}
@@ -46,7 +55,7 @@ public class Grid {
 			  System.out.println("");
 			  // adds the dashed lines under each cell in the grid
 			  for(int i = 0; i <= spreadsheet[r].length; i++) {
-				  System.out.print(nineDashes);
+				  System.out.print(dashes);
 			  }
 			  System.out.println("");
 			  //resets the row back to the first row
@@ -107,14 +116,41 @@ public class Grid {
 		}
 		iteration = 0;
 		Arrays.sort(values);
-		for(int i = Cell.getColIndex(arr[1]); i < Cell.getColIndex(arr[3])+1; i++) {
-			for(int j = Cell.getRowIndex(arr[1]); j < Cell.getRowIndex(arr[3])+1; j++) {
-				if(ascending)
+		if(ascending) {
+			for(int i = Cell.getColIndex(arr[1]); i <= Cell.getColIndex(arr[3]); i++) {
+				for(int j = Cell.getRowIndex(arr[1]); j <= Cell.getRowIndex(arr[3]); j++) {
 					spreadsheet[j][i] = values[iteration];
-				else
-					spreadsheet[Cell.getRowIndex(arr[3])- j][Cell.getColIndex(arr[3])- i] = values[iteration];
-				iteration++;
+					iteration++;
+				}
+			}
+		} else {
+			for(int i = Cell.getColIndex(arr[3]); i >= Cell.getColIndex(arr[1]); i--) {
+				for(int j = Cell.getRowIndex(arr[3]); j >= Cell.getRowIndex(arr[1]); j--) {
+					spreadsheet[j][i] = values[iteration];
+					iteration++;
+				}
 			}
 		}
+	}
+	
+	public void setRows(int num) {
+		CELL_ROWS = num;
+		Cell[][] temp = new Cell[CELL_ROWS][CELL_COLUMNS];
+		for(int i = 0; i < Math.min(temp.length, spreadsheet.length); i++) {
+			for(int j = 0; j < Math.min(temp[i].length, spreadsheet.length); j++) {
+				temp[i][j] = spreadsheet[i][j];
+			}
+		}
+		spreadsheet = temp;
+	}
+	public void setCols(int num) {
+		CELL_COLUMNS = num;
+		Cell[][] temp = new Cell[CELL_ROWS][CELL_COLUMNS];
+		for(int i = 0; i < Math.min(temp.length, spreadsheet.length); i++) {
+			for(int j = 0; j < Math.min(temp[i].length, spreadsheet[i].length); j++) {
+				temp[i][j] = spreadsheet[i][j];
+			}
+		}
+		spreadsheet = temp;
 	}
 }
